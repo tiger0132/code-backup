@@ -1,0 +1,9 @@
+Temp/
+*.in
+*.out
+*.ans
+*.txt
+*~
+
+# .vscode/
+# compile.sh

@@ -1,1 +1,5 @@
-# code-backup
+# Code Backup
+
+如你所见，这是一个大常数蒟蒻的代码备份 repo。
+
+因为这个蒟蒻特别容易丢东西，所以把 vscode 配置文件也传了上来。
