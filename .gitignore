@@ -5,6 +5,7 @@ Rubbish/
 *.ans
 *.txt
 *~
+temp-*
 
 # .vscode/
 # compile.sh
