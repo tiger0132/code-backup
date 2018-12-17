@@ -13,7 +13,7 @@ int size;
 struct node {
 	int l, r, *ans;
 	bool operator<(const node& rhs) const {
-		return l / size == r / size ? r < rhs.r : l < rhs.l;
+		return l / size == rhs.l / size ? r < rhs.r : l < rhs.l;
 	}
 } q[N];
 
@@ -42,7 +42,7 @@ int id(int x) {
 namespace PollardRho {
 	typedef __int128_t duliu;
 	typedef long long ll;
-	const ll _[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}, M = 12;
+	const ll _[] = {2, 7, 61}, M = 3; // 4759123141
 	ll p_(ll x, ll y, ll z) {
 		ll ret = 1;
 		for (; y; (x *= x) %= z, y >>= 1) if (y & 1) (ret *= x) %= z;
