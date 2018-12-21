@@ -1,5 +1,6 @@
 Temp/
 Rubbish/
+Private/
 *.in
 *.out
 *.ans
