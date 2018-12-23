@@ -64,6 +64,7 @@
         "utility": "cpp",
         "valarray": "cpp",
         "stdio.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "queue": "cpp"
     }
 }
