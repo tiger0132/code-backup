@@ -1,11 +1,20 @@
-#include <map>
+#include <unordered_map>
 #include <algorithm>
 #include <cstdio>
 #include <cmath>
 
-typedef std::map<int, int>::const_iterator $;
+typedef std::unordered_map<int, int>::const_iterator $;
+typedef unsigned long long ull;
 const int N = 1e5+51;
 
+struct _ {
+	ull operator()(ull x) const {
+		x += 0x9e3779b97f4a7c15;
+		x = (x^(x>>30)) * 0xbf58476d1ce4e5b9;
+		x = (x^(x>>27)) * 0x94d049bb133111eb;
+		return x^(x>>31);
+	}
+};
 int sz;
 struct node {
 	int l, r, p, *ans;
@@ -15,16 +24,14 @@ struct node {
 } q[N];
 
 int n, m, l, r, a[N], b[N], ans[N], cnt[N], u[N], v[N];
-std::map<int, int> mmp;
+std::unordered_map<int, int> mmp;
 int p2(int x, int y) { return 1ll * u[x % sz] * v[x / sz] % y; }
 void add(int x) {
-	if (cnt[x]) {
-		if (!(mmp[cnt[x]] -= b[x])) mmp.erase(cnt[x]);
-	}
+	if (cnt[x]) mmp[cnt[x]] -= b[x];
 	mmp[++cnt[x]] += b[x];
 }
 void del(int x) {
-	if (!(mmp[cnt[x]] -= b[x])) mmp.erase(cnt[x]);
+	mmp[cnt[x]] -= b[x];
 	if (--cnt[x]) mmp[cnt[x]] += b[x];
 }
 int main() {
