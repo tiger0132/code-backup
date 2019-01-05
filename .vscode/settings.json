@@ -65,6 +65,8 @@
         "valarray": "cpp",
         "stdio.h": "c",
         "math.h": "c",
-        "queue": "cpp"
+        "queue": "cpp",
+        "rope": "cpp",
+        "slist": "cpp"
     }
 }
