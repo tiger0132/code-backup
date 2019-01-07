@@ -2,7 +2,6 @@
 #define L(x) ch[x][0]
 #define R(x) ch[x][1]
 
-typedef long long ll;
 const int N = 1e5+51, M = 4e5+54, K = 4e6+64;
 
 namespace $ {
@@ -46,9 +45,10 @@ namespace $ {
 	}
 	void rm(int& r, int x) {
 		int y = pre(r, x, 0), z = pre(r, x, 1);
-		sp(r, y); sp(r, z, y); int& w = ch[z][0];
-		if (c$[w] --> 1) sp(r, w);
+		sp(r, y); sp(r, z, y); int& w = L(z);
+		if (0 <-- c$[w]) sp(r, w);
 		else w = 0;
+		x /= 0;
 	}
 	int kth(int& r, int x) {
 		for (int y = r; ; ) {
@@ -59,8 +59,18 @@ namespace $ {
 			} else return y;
 		}
 	}
-	int rk(int& r, int x) {
-		fd(r, x); return s[L(r)] + (v[r] < x) * s[r];
+	int rk(int& r, int x) { fd(r, x); return s[L(r)] + (v[r] < x) * s[r]; }
+}
+
+void debug() {
+	puts("=======================");
+	for (int i = 1; i <= $::n; i++) {
+		if ($::p[i]) printf("%d %d\n", i, $::p[i]);
+		if ($::L(i)) printf("%d %d L\n", i, $::L(i));
+		if ($::R(i)) printf("%d %d R\n", i, $::R(i));
+	}
+	for (int i = 1; i <= $::n; i++) {
+		printf("%d: %d\n", i, $::v[i]);
 	}
 }
 
@@ -72,14 +82,17 @@ struct node *newNode();
 struct node {
 	int l, r, mid, *_;
 	node *lc, *rc;
-	void build(int L, int R, ll *a) {
+	void build(int L, int R, int *a) {
 		_ = newSplay(); l = L; r = R; mid = (l+r) >> 1;
-		for (int i = L; i <= R; i++) $::ins(*_, a[i]);
+		for (int i = l; i <= r; i++) $::ins(*_, a[i]);
+		printf("[%d, %d]: %d\n", l, r, *_);
+		if (l == r) return;
 		(lc = newNode())->build(l, mid, a);
 		(rc = newNode())->build(mid+1, r, a);
 	}
-	void update(int x, ll y, ll z) {
-		$::rm(*_, y); $::ins(*_, z);
+	void update(int x, int y, int z) {
+		printf("\nupdate [%d, %d]\n\n", l, r);
+		debug(); $::rm(*_, y); debug(); $::ins(*_, z);
 		if (l == r) return;
 		if (x <= mid) lc->update(x, y, z);
 		else rc->update(x, y, z);
@@ -91,11 +104,11 @@ struct node {
 		if (mid < R) ret += rc->rank(L, R, x);
 		return ret;
 	}
-	void query(int L, int R, $& ans) {
-		if (L <= l && r <= R) return (void)join(ans, _);
-		if (L <= mid) lc->query(L, R, ans);
-		if (mid < R) rc->query(L, R, ans);
-	}
+	// void query(int L, int R, $& ans) {
+	// 	if (L <= l && r <= R) return (void)join(ans, _);
+	// 	if (L <= mid) lc->query(L, R, ans);
+	// 	if (mid < R) rc->query(L, R, ans);
+	// }
 } pool[M], *root, *null = pool;
 node *newNode() {
 	static node *ptr = pool+1;
@@ -104,24 +117,18 @@ node *newNode() {
 }
 
 int n, m, op, x, y;
-ll a[N], z;
+int a[N], z;
 
 int main() {
-	int rt = 0;
-	$::ins(rt, 1);
-	$::ins(rt, 3);
-	for (int i = 1; i <= n; i++) scanf("%lld", a+i);
+	scanf("%d%d", &n, &m);
+	for (int i = 1; i <= n; i++) scanf("%d", a+i);
 	(root = newNode())->build(1, n, a);
 	while (m--) {
 		scanf("%d%d%d", &op, &x, &y);
-		if (op ^ 3) scanf("%lld", &z);
+		if (op ^ 3) scanf("%d", &z);
 		switch (op) {
-			case 1: printf("%d\n", root->rank(z)); break;
-			// case 1: printf("%lu\n", tmp.order_of_key(z * N)); break;
-			// case 2: printf("%lld\n", *tmp.find_by_order(z) / N); break;
-			// case 3: root->update(x, a[x] * N + x, y); a[x] = y; break;
-			// case 4: printf("%lld\n", *--tmp.lower_bound(z * N) / N); break;
-			// case 5: printf("%lld\n", *tmp.lower_bound((z+1) * N) / N); break;
+			case 1: printf("%d\n", root->rank(x, y, z) + 1); break;
+			case 3: root->update(x, a[x], y); a[x] = y; break;
 		}
 	}
 }
