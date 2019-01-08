@@ -1,39 +1,48 @@
+// 40pts, TLE, O(n log^4 n) / O(n log^3 n).
+
 #include <algorithm>
 #include <cstring>
 #include <cstdio>
 
-const int N = 2e4+42, M = 64;
 typedef long long ll;
+const int N = 2e4+42, M = 60;
 
-inline void insert(ll *lb, ll x) {
-	for (int i = 60; i >= 0; i--) {
-		if (1 & ~(x >> (ll)i)) continue;
-		if (!lb[i]) { lb[i] = x; return; }
-		x ^= lb[i];
+struct $ {
+	ll lb[M+1];
+	inline $(const $& rhs) { memcpy(lb, rhs.lb, sizeof lb); }
+	inline $() { memset(lb, 0, sizeof lb); }
+	inline void insert(ll x) {
+		for (ll i = M; i >= 0; i--) if ((x >> i) & 1) {
+			if (!lb[i]) return (void)(lb[i] = x);
+			x ^= lb[i];
+		}
 	}
-}
-inline void merge(ll *x, ll *y) {
-	for (int i = 0; i <= 60; i++) if (y[i]) insert(x, y[i]);
-}
+	inline void merge(const $& rhs) {
+		for (int i = 0; i <= M; i++) insert(rhs.lb[i]);
+	}
+	inline ll ans() {
+		ll ret = 0;
+		for (int i = M; i >= 0; i--) ret = std::max(ret, ret ^ lb[i]);
+		return ret;
+	}
+};
 
 struct node *newNode();
 struct node {
-	int l, r, mid;
+	int l, r, mid; $ _;
 	node *lc, *rc;
-	ll lb[M]; // linear basis
-	inline void pushup() {
-		memcpy(lb, lc->lb, sizeof lb);
-		merge(lb, rc->lb);
-	}
+	inline void pushup() { _ = lc->_; _.merge(rc->_); }
 	void build(int L, int R, ll *a) {
 		l = L; r = R; mid = (l+r) >> 1;
-		if (l == r) return insert(lb, a[l]);
+		if (l == r) return _.insert(a[l]);
 		(lc = newNode())->build(l, mid, a);
 		(rc = newNode())->build(mid+1, r, a);
 		pushup();
 	}
-	inline void query(int L, int R, ll *ret) {
-		if (L <= l && r <= R) merge(ret, lb);
+	inline void query(int L, int R, $& ret) {
+		if (L <= l && r <= R) {
+			return ret.merge(_);
+		}
 		if (L <= mid) lc->query(L, R, ret);
 		if (mid < R) rc->query(L, R, ret);
 	}
@@ -51,7 +60,8 @@ void addedge(int x, int y) {
 	e[++cnt] = (edge){x, head[y]}; head[y] = cnt;
 }
 
-int par[N], dfn[N], dep[N], son[N], sz[N], top[N], w[N], w_[N], idx;
+int par[N], dfn[N], dep[N], son[N], sz[N], top[N], idx;
+ll w[N], w_[N];
 void dfs1(int x, int p, int d) {
 	sz[x] = 1; par[x] = p; dep[x] = d;
 	int mx = -1;
@@ -76,24 +86,34 @@ void dfs2(int x, int t) {
 		dfs2(nx, nx);
 	}
 }
-ll pathLB(int x, int y) {
-	ll lb[M] = {};
+inline ll pathSum(int x, int y) {
+	$ t;
 	while (top[x] != top[y]) {
 		if (dep[top[x]] < dep[top[y]]) std::swap(x, y);
-		root->query();
+		root->query(dfn[top[x]], dfn[x], t);
 		x = par[top[x]];
 	}
 	if (dep[x] > dep[y]) std::swap(x, y);
-	return (ret + BIT::query(dfn[x], dfn[y])) % P;
+	root->query(dfn[x], dfn[y], t);
+	return t.ans();
 }
 
-int n, m;	
+int n, m, x, y;
+
 int main() {
+	freopen("in.in", "r", stdin);
+	freopen("out.out", "w", stdout);
 	scanf("%d%d", &n, &m);
-	for (int i = 1; i <= n; i++) {
-		scanf("%d", w_[i]);
+	for (int i = 1; i <= n; i++) scanf("%lld", w_+i);
+	for (int i = 1; i < n; i++) {
+		scanf("%d%d", &x, &y);
+		addedge(x, y);
 	}
 	dfs1(1, -1, 1);
 	dfs2(1, 1);
-
+	(root = newNode())->build(1, n, w);
+	while (m--) {
+		scanf("%d%d", &x, &y);
+		printf("%lld\n", pathSum(x, y));
+	}
 }
