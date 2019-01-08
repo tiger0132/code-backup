@@ -3,6 +3,7 @@
 
 typedef long long ll;
 const int N = 1e2+21, M = 32;
+
 int lb[M];
 bool insert(int x) {
 	for (int i = 31; i >= 0; i--) {
@@ -12,6 +13,7 @@ bool insert(int x) {
 	}
 	return 0;
 }
+
 int n, a[N];
 ll ans;
 int main() {
