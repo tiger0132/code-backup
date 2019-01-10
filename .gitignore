@@ -6,6 +6,7 @@ Private/
 *.ans
 *.txt
 *~
+std*
 temp-*
 
 # .vscode/
