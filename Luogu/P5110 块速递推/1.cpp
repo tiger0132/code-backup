@@ -11,7 +11,7 @@ do {\
 } while (0) // C[k] = A[i] * B[j]
 
 typedef unsigned long long ull;
-const int P = 1e9+7, M = 31623; // ceil(sqrt(1e9+6)) = 31623
+const int P = 1e9+7, M = 65536; // ceil(sqrt(1e9+6)) = 31623
 
 namespace $ {
 	ull SA, SB, SC;
@@ -38,7 +38,7 @@ int main() {
 	for (scanf("%d", &t), $::init(); t--; ) {
 		n = $::rand() % int(1e9+6);
 		if (!n--) continue;
-		p = n % M, q = n / M;
+		p = n & (M-1), q = n >> 16;
 		ans ^= ((ull)x00[p] * y00[q] + (ull)x01[p] * y10[q]) % P;
 	}
 	printf("%d\n", ans);
