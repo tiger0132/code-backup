@@ -1,0 +1,9 @@
+{BasedOnStyle: Google,
+ IndentWidth: 4,
+ TabWidth: 4,
+ UseTab: Always,
+ AccessModifierOffset: -4,
+ SortIncludes: true,
+ AllowShortIfStatementsOnASingleLine: true,
+ ColumnLimit: 110,
+ Cpp11BracedListStyle: true}
