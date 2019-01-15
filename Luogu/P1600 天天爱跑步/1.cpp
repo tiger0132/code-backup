@@ -1,5 +1,3 @@
-// WA, 80pts.
-
 #include <algorithm>
 #include <cstdio>
 #include <vector>

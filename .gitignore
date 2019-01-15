@@ -9,6 +9,7 @@ Private/
 std*
 temp-*
 DLOJ/
+Others/
 
 # .vscode/
 # compile.sh
