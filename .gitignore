@@ -1,6 +1,7 @@
 Temp/
 Rubbish/
 Private/
+YALI/
 *.in
 *.out
 *.ans
