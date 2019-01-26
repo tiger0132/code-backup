@@ -67,6 +67,7 @@
         "math.h": "c",
         "queue": "cpp",
         "rope": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "set": "cpp"
     }
 }
