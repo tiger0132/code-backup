@@ -68,6 +68,7 @@
         "queue": "cpp",
         "rope": "cpp",
         "slist": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "cassert": "cpp"
     }
 }
