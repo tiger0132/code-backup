@@ -69,6 +69,7 @@
         "rope": "cpp",
         "slist": "cpp",
         "set": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "ios": "cpp"
     }
 }
