@@ -5,11 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/c++/7.3.0",
-                "/usr/include",
-                "/usr/include/x86_64-linux-gnu/c++/7",
-                "/usr/include/i386-linux-gnu",
-                "/usr/include/linux",
-                "/usr/include/c++/7/tr1"
+                "/usr/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/cpp",
