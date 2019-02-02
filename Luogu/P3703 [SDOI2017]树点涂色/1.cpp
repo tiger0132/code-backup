@@ -11,7 +11,7 @@ void addedge(int x, int y) {
 	e[++cnt] = (edge){x, head[y]}, head[y] = cnt;
 }
 
-int par[N], dep[N], dfn[N], sz[N], son[N], top[N], idx;
+int par[N], dep[N], dfn[N], lnk[N], sz[N], son[N], top[N], idx;
 void dfs1(int x, int p, int d) {
 	dep[x] = d, par[x] = p, sz[x] = 1;
 	int mx = 0;
@@ -27,7 +27,7 @@ void dfs1(int x, int p, int d) {
 	}
 }
 void dfs2(int x, int t) {
-	dfn[x] = ++idx, top[x] = t;
+	dfn[x] = ++idx, lnk[idx] = x, top[x] = t;
 	if (!son[x]) return;
 	dfs2(son[x], t);
 	for (int i = head[x]; i; i = e[i].next) {
@@ -53,8 +53,8 @@ struct node {
 		tag = 0;
 	}
 	void build(int L, int R) {
-		l = L, r = R, mid = (l + r) >> 1;
-		if (l == r) return void(max = dep[dfn[l]]);
+		l = L, r = R, mid = (l + r) >> 1, tag = 0;
+		if (l == r) return void(max = dep[lnk[l]]);
 		(lc = newNode())->build(l, mid);
 		(rc = newNode())->build(mid + 1, r);
 		pushup();
@@ -73,6 +73,12 @@ struct node {
 		if (L <= mid) lc->update(L, R, x);
 		if (mid < R) rc->update(L, R, x);
 		pushup();
+	}
+	void prt() {
+		printf("(%d %d %d %d)", l, r, max, tag);
+		if (l == r) return;
+		lc->prt();
+		rc->prt();
 	}
 } pool[N << 2], *null = pool, *root;
 node* newNode() {
@@ -127,8 +133,9 @@ int main() {
 		else if (op == 2) {
 			scanf("%d", &y);
 			z = lca(x, y);
-			printf("%d\n", root->query(x, x) + root->query(y, y) -
-							   2 * root->query(z, z) + 1);
+			printf("%d\n", root->query(dfn[x], dfn[x]) +
+							   root->query(dfn[y], dfn[y]) -
+							   2 * root->query(dfn[z], dfn[z]) + 1);
 		} else
 			printf("%d\n", root->query(dfn[x], dfn[x] + sz[x] - 1));
 	}
