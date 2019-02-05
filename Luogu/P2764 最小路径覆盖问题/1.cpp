@@ -2,11 +2,11 @@
 #include <cstring>
 #include <queue>
 
-const int N = 2e2 + 22, M = 6e3 + 36, INF = 0x3f3f3f3f;
+const int N = 4e2 + 24, M = 6e3 + 36, INF = 0x3f3f3f3f;
 
 struct edge {
 	int to, next, w;
-} e[N << 2];
+} e[M << 2];
 int head[N], cnt = 1;
 void addedge(int x, int y, int z) {
 	e[++cnt] = (edge){y, head[x], z};

@@ -2,7 +2,7 @@
 #include <cstring>
 #include <queue>
 
-const int N = 1e3 + 31, M = 3e4 + 43, K = 22;
+const int N = 1e3 + 31, M = 3e4 + 43, K = 22, INF = 0x3f3f3f3f;
 
 struct edge {
 	int to, next, w;
@@ -52,14 +52,14 @@ int dfs(int s, int t, int flow) {
 
 int dinic(int s, int t) {
 	int ret = 0;
-	while (bfs(s, t)) ret += dfs(s, t);
+	while (bfs(s, t)) ret += dfs(s, t, INF);
 	return ret;
 }
 
 std::queue<int> out[K];
 int n, k, x, y, sum;
 int main() {
-	scanf("%d%d", &n, &k);
+	scanf("%d%d", &k, &n);
 	for (int i = 1; i <= k; i++) {
 		scanf("%d", &x);
 		addedge(n + i + 1, n + k + 2, x);
@@ -72,10 +72,10 @@ int main() {
 			addedge(i + 1, n + y + 1, 1);
 		}
 	}
-	if (dinic(1, n + k + 2) == sum) return puts("No Solution!"), 0;
+	if (dinic(1, n + k + 2) != sum) return puts("No Solution!"), 0;
 	for (int i = 1; i <= n; i++) {
 		for (int j = head[i + 1]; j; j = e[j].next) {
-			if (!e[j].w) {
+			if ((~j & 1) && !e[j].w) {
 				out[e[j].to - n - 1].push(i);
 				break;
 			}
