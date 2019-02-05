@@ -12,9 +12,7 @@ struct $ {
 	inline $(D x_ = 0, D y_ = 0) : x(x_), y(y_) {}
 	inline $ operator+(const $& rhs) const { return $(x + rhs.x, y + rhs.y); }
 	inline $ operator-(const $& rhs) const { return $(x - rhs.x, y - rhs.y); }
-	inline $ operator*(const $& rhs) const {
-		return $(x * rhs.x - y * rhs.y, x * rhs.y + y * rhs.x);
-	}
+	inline $ operator*(const $& rhs) const { return $(x * rhs.x - y * rhs.y, x * rhs.y + y * rhs.x); }
 };
 
 int r[N], lim = 1, l;
@@ -40,9 +38,8 @@ int main() {
 	scanf("%d%d", &n, &m);
 	for (int i = 0; i <= n; i++) scanf("%lf", &a[i].x);
 	for (int i = 0; i <= m; i++) scanf("%lf", &b[i].x);
-	while (lim <= n + m) lim <<= 1, l++;
-	for (int i = 0; i < lim; i++)
-		r[i] = (r[i >> 1] >> 1) | ((i & 1) << (l - 1));
+	while (lim < n + m) lim <<= 1, l++;
+	for (int i = 0; i < lim; i++) r[i] = (r[i >> 1] >> 1) | ((i & 1) << (l - 1));
 	fft(a, 1), fft(b, 1);
 	for (int i = 0; i <= lim; i++) {
 		a[i] = a[i] * b[i];
