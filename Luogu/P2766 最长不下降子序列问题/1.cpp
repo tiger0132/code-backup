@@ -75,6 +75,6 @@ int main() {
 	}
 	printf("%d\n", ans = dinic(1, 2));
 	addedge(1, X(1), INF), addedge(X(1), Y(1), INF);
-	if (dp[n] == len) addedge(Y(n), 2, INF), addedge(X(n), Y(n), INF);
+	if (dp[n] == len && n != 1) addedge(Y(n), 2, INF), addedge(X(n), Y(n), INF);
 	printf("%d", ans + dinic(1, 2));
 }
