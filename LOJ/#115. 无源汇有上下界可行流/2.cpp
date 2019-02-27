@@ -54,11 +54,11 @@ int main() {
 	for (int i = 1; i <= m; i++) {
 		scanf("%d%d%d%d", x + i, y + i, l + i, &r);
 		addedge(x[i] + 2, y[i] + 2, r - l[i]);
+		fl[x[i]] -= l[i], fl[y[i]] += l[i];
 	}
-	for (int i = 1; i <= m; i++) {
-		addedge(1, y[i] + 2, l[i]);
-		addedge(x[i] + 2, 2, l[i]);
-		tot += l[i];
+	for (int i = 1; i <= n; i++) {
+		if (fl[i] > 0) addedge(1, i + 2, fl[i]), tot += fl[i];
+		if (fl[i] < 0) addedge(i + 2, 2, -fl[i]);
 	}
 	if (dinic(1, 2) < tot) return puts("NO");
 	puts("YES");
