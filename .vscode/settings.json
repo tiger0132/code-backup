@@ -70,6 +70,8 @@
         "slist": "cpp",
         "set": "cpp",
         "cassert": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "string": "cpp",
+        "regex": "cpp"
     }
 }
