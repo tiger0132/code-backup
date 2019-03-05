@@ -72,6 +72,7 @@
         "cassert": "cpp",
         "ios": "cpp",
         "string": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "memory_resource": "cpp"
     }
 }
