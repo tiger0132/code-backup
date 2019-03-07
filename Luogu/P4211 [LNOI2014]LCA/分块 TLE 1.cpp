@@ -1,3 +1,6 @@
+// 常数过大，会 TLE
+// 复杂度 $O(n \sqrt n)$
+
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -17,7 +20,7 @@ void addedge(int x, int y) {
 }
 
 namespace $ {
-int par[N], top[N], son[N], dep[N], m[N], idx;
+int par[N], top[N], son[N], dep[N], sz[N], idx;
 void dfs1(int x, int p, int d) {
 	sz[x] = 1, par[x] = p, dep[x] = d;
 	int mx = -1;
@@ -54,7 +57,7 @@ using $::lca, $::dep;  // C++17!
 
 ll sz[N], _[N];
 void dfs1(int x, int p, int l, int r) {
-	sz[x] = l <= x && x <= r;
+	_[x] = 0, sz[x] = l <= x && x <= r;
 	for (int i = head[x], nx; i; i = e[i].next) {
 		if ((nx = e[i].to) == p) continue;
 		dfs1(nx, x, l, r);
@@ -66,14 +69,16 @@ void dfs1(int x, int p, int l, int r) {
 ll sdis[M][N];
 void dfs2(int x, int p, int id) {
 	sdis[id][x] = _[x];
+	// printf("%d %d: %d\n", id, x, sdis[id][x]);
 	for (int i = head[x], nx; i; i = e[i].next) {
 		if ((nx = e[i].to) == p) continue;
-		ll u = _[x] - sz[nx] - _[nx], v = sz[x] - sz[nx];
+		ll u = _[x], v = sz[x];
+		u -= sz[nx] + _[nx];
+		v -= sz[nx];
 		_[nx] += u + v;
 		sz[nx] = sz[x];
 		dfs2(nx, x, id);
 	}
-	printf("%d %d: %lld\n", id, x, sdis[id][x]);
 }
 
 int n, m, q, l, r, x, sdep[N];
@@ -84,30 +89,37 @@ int main() {
 		addedge(i, x + 1);
 	}
 	$::dfs1(1, 0, 1), $::dfs2(1, 1);
-	printf("%d\n", lca(4, 5));
 	for (int i = 1; i <= n; i++) sdep[i] = sdep[i - 1] + dep[i];
-	for (int i = 1; i <= 1; i++) {
+	for (int i = 1; i <= (n + m - 1) / m; i++) {
 		dfs1(1, 0, lb(i), rb(i));
 		dfs2(1, 0, i);
 	}
 	while (q--) {
 		scanf("%d%d%d", &l, &r, &x);
 		l++, r++, x++;
-		int L = col(l), R = col(R);
+		int L = col(l), R = col(r);
 		ll ans = 0, tmp = 0;
-		for (int i = l; i <= std::min(rb(L), r); i++) ans += dep[lca(i, x)];
-		printf("[%d, %d]\n", l, std::min(rb(L), r));
-		printf("# %lld\n", ans);
-		if (L != R)
-			for (int i = lb(R); i <= r; i++) ans += dep[lca(i, x)];
-		printf("[%d, %d]\n", lb(R), r);
-		printf("# %lld\n", ans);
-		l = std::min(rb(L), r), r = lb(R);
-		tmp = sdep[r] - sdep[l - 1] + (r - l + 1ll) * dep[x];
-		for (int i = L + 1; i < R; i++) tmp -= sdis[i][x];
-		printf("[%d, %d]\n", lb(L + 1), rb(R - 1));
-		printf("# %lld %lld\n", ans, tmp);
-		ans += tmp / 2;
+		if (L == R) {
+			for (int i = l; i <= r; i++) ans += dep[lca(i, x)];
+		} else {
+			for (int i = l; i <= std::min(rb(L), r); i++) ans += dep[lca(i, x)];
+			// printf("! %lld\n", ans);
+			for (int i = lb(R); i <= r; i++) {
+				// printf("dep[lca(%d, %d)] = dep[%d] = %d\n", i, x, lca(i, x), dep[lca(i, x)]);
+				ans += dep[lca(i, x)];
+			}
+			// printf("! %lld\n", ans);
+			l = rb(L), r = rb(R - 1);
+			// printf("l = %d, r = %d\n", l, r);
+			tmp = sdep[r] - sdep[l] + (r - l) * dep[x];
+			// printf("val = %lld, %lld\n", sdep[r] - sdep[l], (r - l) * dep[x]);
+			for (int i = L + 1; i < R; i++) {
+				// printf("[%d, %d]: %lld\n", lb(i), rb(i), sdis[i][x]);
+				tmp -= sdis[i][x];
+			}
+			ans += tmp / 2;
+			// printf("! %lld %lld\n", ans, tmp);
+		}
 		printf("%lld\n", ans % P);
 	}
 }
