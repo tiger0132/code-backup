@@ -8,8 +8,8 @@
             "type": "shell",
             "command": "./compile.sh",
             "args": [
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "${fileExtname}",
+                "'${fileDirname}/${fileBasenameNoExtension}'",
+                "'${fileExtname}'",
             ],
             "group": {
                 "kind": "build",
