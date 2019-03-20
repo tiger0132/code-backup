@@ -11,6 +11,7 @@ std*
 temp-*
 DLOJ/
 Others/
+.vscode/ipch/
 
 # Developing, will be public soon
 Utils/
