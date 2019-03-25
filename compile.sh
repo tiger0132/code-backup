@@ -1,6 +1,6 @@
-#! /bin/zsh
+#! /bin/bash
 
-cp $1$2 Temp/src$2
+cp "$1$2" "Temp/src$2"
 if [ $2x = ".cpp"x ]; then
 	# g++ Temp/src$2 -o Temp/exec -std=c++98 -Wall -Wshadow -Wextra -g
 	g++ Temp/src$2 -o Temp/exec -std=c++17 -Wall -Wshadow -Wextra -g
