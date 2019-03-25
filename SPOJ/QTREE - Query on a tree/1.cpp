@@ -53,7 +53,7 @@ void dfs1(int x, int p, int d) {
 	for (int i = head[x], nx, mx = 0; i; i = e[i].next) {
 		if ((nx = e[i].to) == p) continue;
 		w_[nx] = e[i].w, dfs1(nx, x, d + 1), sz[x] += sz[nx];
-		if (sz[x] > mx) mx = sz[x], son[x] = nx;
+		if (sz[nx] > mx) mx = sz[nx], son[x] = nx;
 	}
 }
 void dfs2(int x, int t) {

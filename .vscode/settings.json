@@ -73,6 +73,7 @@
         "ios": "cpp",
         "string": "cpp",
         "regex": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "random": "cpp"
     }
 }
