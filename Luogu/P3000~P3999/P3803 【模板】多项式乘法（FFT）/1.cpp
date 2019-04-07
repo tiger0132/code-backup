@@ -38,7 +38,7 @@ int main() {
 	scanf("%d%d", &n, &m);
 	for (int i = 0; i <= n; i++) scanf("%lf", &a[i].x);
 	for (int i = 0; i <= m; i++) scanf("%lf", &b[i].x);
-	while (lim < n + m) lim <<= 1, l++;
+	while (lim <= n + m) lim <<= 1, l++;
 	for (int i = 0; i < lim; i++) r[i] = (r[i >> 1] >> 1) | ((i & 1) << (l - 1));
 	fft(a, 1), fft(b, 1);
 	for (int i = 0; i <= lim; i++) {
