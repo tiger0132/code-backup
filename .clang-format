@@ -5,5 +5,5 @@
  AccessModifierOffset: -4,
  SortIncludes: true,
  AllowShortIfStatementsOnASingleLine: true,
- ColumnLimit: 120,
+ ColumnLimit: 130,
  Cpp11BracedListStyle: true}
