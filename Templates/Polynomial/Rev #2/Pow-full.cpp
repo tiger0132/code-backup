@@ -1,5 +1,3 @@
-// WA, 90pts
-
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -83,23 +81,24 @@ inline void exp(int n, int *a, int *ans) {  // LIMITATION: n = 2^d
 inline void pow(int n, int k, int *a, int *ans) {
 	static int b[N];
 	int t = 0, ofs = 0;
-	if (*a > 1) {
-		t = I(*a);
-		for (int i = 1; i < n; i++) a[i] = 1ll * a[i] * t % P;
-		t = p(*a, k), *a = 1;
-	} else if (!*a) {
+	if (!*a) {
 		for (ofs = 1; !a[ofs] && ofs < n;) ofs++;
 		for (int i = 0; i < n; i++) a[i] = (i + ofs < n ? a[i + ofs] : 0);
 		if (1ll * ofs * k >= n) return;
 		ofs *= k;
 	}
+	if (*a > 1) {
+		t = I(*a);
+		for (int i = 1; i < n; i++) a[i] = 1ll * a[i] * t % P;
+		t = p(*a, k), *a = 1;
+	}
 	ln(n, a, b);
 	for (int i = 0; i < n; i++) b[i] = 1ll * b[i] * k % P;
 	exp(n, b, ans);
+	if (ofs)
+		for (int i = n - 1; i >= 0; i--) (i + ofs <= n && (ans[i + ofs] = ans[i])), ans[i] = 0;
 	if (t)
 		for (int i = 0; i < n; i++) ans[i] = 1ll * ans[i] * t % P;
-	else if (ofs)
-		for (int i = n - 1; i >= 0; i--) (i + ofs <= n && (ans[i + ofs] = ans[i])), ans[i] = 0;
 }
 
 int n, k, m = 1, a[N], b[N];
