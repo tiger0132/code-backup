@@ -1,92 +1,60 @@
-// luogu-judger-enable-o2
-// just test
-// TLE!
-
-#include <bits/stdc++.h>
-using namespace std;
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <vector>
 
 const int N = 2e6 + 62;
-
-int trie[N][26], cnt, _;
-int fail[N];
-int val[N];
-
-int ans[N];
-int st[N];
-
-void add(const char *str) {
-	int pos = 0, n = strlen(str);
-	for (int i = 0; i < n; i++) {
-		int nx = str[i] - 97;
-		if (!trie[pos][nx]) {
-			trie[pos][nx] = ++cnt;
-		}
-		pos = trie[pos][nx];
-	}
-	val[pos] = ++_;
+struct edge {
+	int to, next;
+} e[N << 1];
+int head[N], cnt;
+void addedge(int x, int y) {
+	e[++cnt] = (edge){y, head[x]}, head[x] = cnt;
+	e[++cnt] = (edge){x, head[y]}, head[y] = cnt;
 }
 
-void ac() {
-	queue<int> bfs;
-	// fail[0] = 0;
-	for (int i = 0; i < 26; i++) {
-		int nx = trie[0][i];
-		if (nx) {
-			fail[nx] = 0;
-			bfs.push(nx);
-		}
+int ch[N][26], fail[N], v[N], c;
+int ins(char *s) {
+	int x = 0;
+	for (int i = 0; s[i]; i++) {
+		int &nx = ch[x][s[i] - 'a'];
+		if (!nx) nx = ++c;
+		x = nx;
 	}
-	while (!bfs.empty()) {
-		int pos = bfs.front();
-		bfs.pop();
+	return x;
+}
+void build() {
+	std::queue<int> q;
+	for (int i = 0, nx; i < 26; i++)
+		if (nx = ch[0][i]) fail[nx] = 0, q.push(nx);
+	for (; !q.empty(); q.pop()) {
+		int x = q.front();
 		for (int i = 0; i < 26; i++) {
-			int &nx = trie[pos][i];
-			if (nx) {
-				fail[nx] = trie[fail[pos]][i];
-				bfs.push(nx);
-			} else {
-				nx = trie[fail[pos]][i];
-			}
+			int &nx = ch[x][i];
+			if (nx)
+				fail[nx] = ch[fail[x]][i], q.push(nx);
+			else
+				nx = ch[fail[x]][i];
 		}
 	}
 }
-
-void query(const char *str) {
-	int pos = 0, n = strlen(str);
-	for (int i = 0; i < n; i++) {
-		pos = trie[pos][str[i] - 97];
-		for (int t = pos; t; t = fail[t]) {
-			ans[val[t]]++;
-		}
-	}
+void dfs(int x, int p) {
+	for (int i = head[x], nx; i; i = e[i].next)
+		if ((nx = e[i].to) != p) dfs(nx, x), v[x] += v[nx];
 }
 
-char buf[N];
-char src[N];
-int n, ret;
-
+std::vector<int> endp;
+int n, ans;
+char s[N];
 int main() {
-	// freopen("C:\\Users\\Administrator\\Documents\\testdata (15).in", "r", stdin);
 	scanf("%d", &n);
-	{
-		memset(trie, 0, sizeof trie);
-		memset(fail, 0, sizeof fail);
-		memset(val, 0, sizeof val);
-		memset(ans, 0, sizeof ans);
-		memset(st, 0, sizeof st);
-		cnt = _ = 0;
-
-		for (int i = 1; i <= n; i++) {
-			scanf("%s", buf);
-			add(buf);
-		}
-		ac();
-		scanf("%s", src);
-		query(src);
-		//		printf("%d\n", ret = *max_element(ans+1, ans+n+1));
-		for (int i = 1; i <= n; i++) {
-			printf("%d\n", ans[i]);
-		}
-	}
-	return 0;
+	for (int i = 1; i <= n; i++) scanf("%s", s), endp.push_back(ins(s));
+	build();
+	scanf("%s", s);
+	for (int i = 0, x = 0; s[i]; i++) v[x = ch[x][s[i] - 'a']]++;
+	for (int i = 1; i <= c; i++) addedge(i, fail[i]);
+	dfs(0, 0);
+	for (int i : endp) ans += !!v[i];
+	printf("%d", ans);
 }
