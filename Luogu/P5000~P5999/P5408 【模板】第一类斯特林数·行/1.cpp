@@ -1,0 +1,1 @@
+../../../Templates/Polynomial/Rev #3/Stirling-1-row.cpp
