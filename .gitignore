@@ -7,7 +7,7 @@ YALI/
 *.ans
 *.txt
 *~
-std*
+*std*
 temp-*
 DLOJ/
 Others/
