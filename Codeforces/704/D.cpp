@@ -7,8 +7,6 @@
 // FUCK YOU GODDAMN CASE #25
 // FUCK YOU GODDAMN CASE #25
 
-bool f;
-
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -71,7 +69,7 @@ void $(int x, int y, int l, int r) {
 	addedge(x, y, r - l), fl[x] -= l, fl[y] += l;
 }
 void $() {
-	for (int i = 3; i <= n + 4; i++)
+	for (int i = 1; i < N; i++)
 		if (fl[i] > 0)
 			addedge(SS, i, fl[i]), base += fl[i];
 		else
@@ -81,7 +79,6 @@ void $() {
 int x[N], y[N], sx[N], sy[N], xlim[N], ylim[N];
 int main() {
 	scanf("%d%d%d%d", &n, &m, &r, &b);
-	if (r == 467511551) f = true;
 	if (r > b) std::swap(r, b), std::swap(s[0], s[1]);
 	for (int i = 1; i <= n; i++) {
 		scanf("%d%d", &u, &v), x[i] = id<0>(u), y[i] = id<1>(v);
@@ -105,7 +102,7 @@ int main() {
 		$(Y(i), T, std::max(0, (sy[i] - ylim[i] + 1) / 2), (sy[i] + ylim[i]) / 2);
 	}
 	$();
-	if (dinic(SS, TT) < base) return (f && puts("W")), puts("-1"), 0;
+	if (dinic(SS, TT) < base) return puts("-1"), 0;
 	ans = dinic(S, T);
 	printf("%lld\n", 1ll * ans * r + 1ll * (n - ans) * b);
 	for (int i = 1; i <= n; i++) putchar(s[e[2 * i].w]);
