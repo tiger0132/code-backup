@@ -74,6 +74,7 @@
         "string": "cpp",
         "regex": "cpp",
         "memory_resource": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "map": "cpp"
     }
 }
