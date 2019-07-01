@@ -12,7 +12,8 @@ struct LCT {
     int ch[N][2], p[N], v[N], r[N], st[N], top;
     void up(int x) { v[x] = v[L(x)] ^ v[R(x)] ^ _[x]; }
     bool c(int x) { return R(p[x]) == x; }
-    void pd(int x) { r[x] && (std::swap(L(x), R(x)), r[x] = 0, r[L(x)] ^= 1, r[R(x)] ^= 1); }
+	void rv(int x) { r[x] ^= 1, std::swap(L(x), R(x)); }
+    void pd(int x) { r[x] && (rv(L(x)), rv(R(x)), r[x] = 0); }
     bool nr(int x) { return L(p[x]) == x || R(p[x]) == x; }
     void rt(int x) {
 		int y = p[x], z = p[y], k = c(x), w = ch[x][!k];
@@ -24,7 +25,7 @@ struct LCT {
 		for (int y = p[x]; nr(x); rt(x), y = p[x]) (nr(y) && (rt(c(x) == c(y) ? y : x), 0));
 	}
  	void ac(int x) { for (int i = 0; x; x = p[i = x]) sp(x), R(x) = i, up(x); }
- 	void mr(int x) { ac(x); sp(x); r[x] ^= 1; }
+ 	void mr(int x) { ac(x); sp(x); rv(x); }
  	int fr(int x) { ac(x); sp(x); while (L(x)) pd(x), x = L(x); sp(x); return x; }
  	void spl(int x, int y) { mr(x); ac(y); sp(y); }
  	void cut(int x, int y) { mr(x); if (fr(y) == x && p[y] == x && !L(y)) R(x) = p[y] = 0, up(x); }
