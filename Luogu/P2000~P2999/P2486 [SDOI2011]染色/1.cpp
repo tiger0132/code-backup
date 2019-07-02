@@ -1,0 +1,1 @@
+../../../Templates/LCT/Rev #1/P2486 [SDOI2011]染色.cpp
