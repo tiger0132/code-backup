@@ -8,8 +8,11 @@
             "type": "shell",
             "command": "./compile.sh",
             "args": [
-                "'${fileDirname}/${fileBasenameNoExtension}'",
-                "'${fileExtname}'",
+                {
+                    "value": "${fileDirname}/${fileBasenameNoExtension}",
+                    "quoting": "escape"
+                },
+                "${fileExtname}",
             ],
             "group": {
                 "kind": "build",
