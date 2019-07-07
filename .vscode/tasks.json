@@ -13,6 +13,10 @@
                     "quoting": "escape"
                 },
                 "${fileExtname}",
+                {
+                    "value": "-I${fileDirname}",
+                    "quoting": "escape"
+                }
             ],
             "group": {
                 "kind": "build",
