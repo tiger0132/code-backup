@@ -6,21 +6,6 @@
 typedef long long ll;
 const int N = 5e5 + 55;
 
-inline int read() {  // Orz Itst
-	int a = 0;
-	bool f = 0;
-	char c = getchar();
-	while (c != EOF && !isdigit(c)) {
-		if (c == '-') f = 1;
-		c = getchar();
-	}
-	while (c != EOF && isdigit(c)) {
-		a = (a << 3) + (a << 1) + (c ^ '0');
-		c = getchar();
-	}
-	return f ? -a : a;
-}
-
 // clang-format off
 #define M1(a,b)a
 #define L ch]M1([,])0
