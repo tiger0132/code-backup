@@ -10,13 +10,9 @@
             "args": [
                 {
                     "value": "${fileDirname}/${fileBasenameNoExtension}",
-                    "quoting": "escape"
+                    "quoting": "strong"
                 },
-                "${fileExtname}",
-                {
-                    "value": "-I${fileDirname}",
-                    "quoting": "escape"
-                }
+                "${fileExtname}"
             ],
             "group": {
                 "kind": "build",
