@@ -26,7 +26,7 @@ void rt(int x) {
 	(nr(y) && (z[ch][c(y)] = x)), p[p[p[ch[x[ch][!k] = y][k] = w] = y] = x] = z, up(y), up(x);
 }
 void sp(int x) {
-	for (int i = st[top = 1] = x; i; i = i[p]) st[++top] = i[p];
+	for (int i = st[top = 1] = x; nr(i); i = i[p]) st[++top] = i[p];
 	while (top) pd(st[top--]);
 	for (int y = x[p]; nr(x); rt(x), y = x[p]) nr(y) && (rt(c(x) ^ c(y) ? x : y), 0);
 }
