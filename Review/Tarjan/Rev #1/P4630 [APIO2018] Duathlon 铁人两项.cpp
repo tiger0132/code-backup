@@ -1,0 +1,1 @@
+../../../Luogu/P4000~P4999/P4630 [APIO2018] Duathlon 铁人两项/1.cpp
