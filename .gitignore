@@ -8,6 +8,8 @@ YALI/
 *.txt
 *~
 *std*
+*chk*
+*check*
 temp-*
 DLOJ/
 Others/
