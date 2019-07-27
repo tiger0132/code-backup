@@ -27,15 +27,10 @@ signed main() {
 	for (; tt; tt /= 6) b[++c] = tt % 6;
 	n = 2 * c + 2;
 	printf("%d %d\n", n, n);
-	C1(2, 1, 2, 2), C2(3, 1, 3, 2), C2(4, 1, 4, 2);
-	if (b[c]) {
-		if (b[c] <= 3) C1(2, 2, 3, 2);
-		if (b[c] != 3) C1(2, 3, 2, 4);
-		if (b[c] == 1) C1(3, 3, 3, 4);
-		if (b[c] == 4) C1(3, 2, 4, 2);
-	}
-	for (signed m = 4, i = c - 1; i >= 1; i--, m += 2) {
-		A, X, Y, Z;
+	C2(2, 1, 2, 2);
+	for (signed m = 2, i = c; i >= 1; i--, m += 2) {
+		A, Y, Z;
+		if (m > 2) X;
 		if (b[i] == 0) B, C, D;
 		if (b[i] == 1) B, C;
 		if (b[i] == 2) C;
