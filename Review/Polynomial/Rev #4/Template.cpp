@@ -1,4 +1,5 @@
 // Modified from f321dd's template
+// Implemented: mul inv sqrt
 
 #include <algorithm>
 #include <cstdio>
@@ -7,7 +8,7 @@
 
 typedef unsigned u;
 typedef unsigned long long ul;
-const int N = 2.7e5, P = 998244353, G = 3, GInv = 332748118;
+const int N = 2.7e5, P = 998244353, G = 3, GInv = 332748118, div2 = 499122177;
 
 u md(u x) { return x < P ? x : x - P; }
 u pw(u x, u y) {
@@ -15,6 +16,29 @@ u pw(u x, u y) {
 	for (; y; y >>= 1, x = (ul)x * x % P)
 		if (y & 1) r = (ul)r * x % P;
 	return r;
+}
+struct comp {
+	u x, y;
+};
+comp mul(comp a, comp b, u w) {
+	return {(1ll * a.x * b.x % P + 1ll * w * a.y % P * b.y % P) % P,
+			(1ll * a.x * b.y % P + 1ll * a.y * b.x % P) % P};
+}
+u pw(comp x, u y, u w) {
+	comp r = {1, 0};
+	for (; y; y >>= 1, x = mul(x, x, w))
+		if (y & 1) r = mul(r, x, w);
+	return std::min(r.x, P - r.x);
+}
+u cipolla(u x) {
+	if (pw(x, (P - 1) / 2) == P - 1) return -1;
+	while (1) {
+		u a = rand(), w = (1ll * a * a - x + P) % P;
+		if (pw(w, (P - 1) / 2) == P - 1) {
+			u x = pw({a, 1}, (P + 1) / 2, w);
+			return std::min(x, P - x);
+		}
+	}
 }
 struct inv_t {
 	std::vector<u> v;
@@ -27,7 +51,7 @@ struct inv_t {
 		return v[x];
 	}
 	u operator()(u x) const { return pw(x, P - 2); }
-} inv;
+} iv;
 
 struct poly {
 	std::vector<u> v;
@@ -48,7 +72,7 @@ struct poly {
 	}
 	void intg() {
 		shrink(), shl();
-		for (int i = size() - 1; i > 0; --i) v[i] = (ul)v[i] * inv[i] % P;
+		for (int i = size() - 1; i > 0; --i) v[i] = (ul)v[i] * iv[i] % P;
 	}
 	static int len(int n) {
 		while (n != (n & -n)) n += n & -n;
@@ -68,10 +92,10 @@ struct poly {
 			ul wn = pw(op ? GInv : G, (P - 1) / (2 * i));
 			for (int j = 1; j < i; j += 2) w[j] = wn * w[j - 1] % P;
 			for (int j = 0; j < n; j += 2 * i) {
-				u *b = &v[0] + j, *c = b + i;
+				u *a = &v[0] + j, *b = a + i;
 				for (int k = 0; k < i; ++k) {
-					u y = (ul)w[k] * c[k] % P;
-					c[k] = md(b[k] + P - y), b[k] = md(b[k] + y);
+					u y = (ul)w[k] * b[k] % P;
+					b[k] = md(a[k] + P - y), a[k] = md(a[k] + y);
 				}
 			}
 		}
@@ -80,7 +104,7 @@ struct poly {
 	void idft() {
 		int n = size();
 		ntt(n, 1);
-		ul x = inv(n);
+		ul x = iv(n);
 		for (int i = 0; i < n; ++i) v[i] = v[i] * x % P;
 	}
 	void mul(poly r) {  // 注意，处理完后 r 将会保留 dft 状态
@@ -90,20 +114,46 @@ struct poly {
 		for (int i = 0; i < n; ++i) v[i] = (ul)v[i] * r.v[i] % P;
 		idft(), shrink();
 	}
+	void mod(int n) { v.resize(n); }
+	// F: 原多项式, G: mod x^n 的答案, H: mod x^(n/2) 的答案
+	void inv(int n) {  // G = H(2 - FH) (mod x^n)
+		std::vector<u> f0{iv(v[0])};
+		int m = len(n);
+		mod(m), v.swap(f0);
+		for (int i = 2; i <= m; i *= 2) {  // v: H
+			int l = i * 2;
+			poly f(l);  // F mod x^i
+			for (int j = 0; j < i; ++j) f[j] = f0[j];
+			f.dft(l), dft(l);
+			for (int j = 0; j < l; ++j) v[j] = v[j] * (2 + P - (ul)f[j] * v[j] % P) % P;
+			idft(), mod(i);
+		}
+		mod(n);
+	}
+	void sqrt(int n) {  // G = (F + H^2)/(2H) (mod x^n)
+		std::vector<u> f0{cipolla(v[0])};
+		int m = len(n);
+		mod(m), v.swap(f0);
+		for (int i = 2; i <= m; i *= 2) {  // v: H
+			poly f(i);					   // F mod x^i
+			for (int j = 0; j < i; ++j) f[j] = f0[j];
+			std::vector<u> h = v;
+			inv(i), mul(f), mod(i);  // v = F/H mod x^i
+			for (int j = 0; j < i / 2; ++j)
+				v[j] = (ul)div2 * (v[j] + h[j]) % P;  // H 的次数是 i/2
+			for (int j = i / 2; j < i; ++j)
+				v[j] = (ul)div2 * v[j] % P;  // v = (F + H^2)/H mod x^i
+		}
+		mod(n);
+	}
 };
 
-poly a, b;
-int n, m;
+poly a;
+int n;
 int main() {
-	scanf("%d%d", &n, &m);
-	a = poly(n + 1), b = poly(m + 1);
-	for (int i = 0; i <= n; ++i) scanf("%u", &a[i]);
-	for (int i = 0; i <= m; ++i) scanf("%u", &b[i]);
-	a.mul(b);
-	for (int i = 0; i <= n + m; ++i) printf("%u ", a[i]);
+	scanf("%d", &n);
+	a = poly(n);
+	for (int i = 0; i < n; ++i) scanf("%u", &a[i]);
+	a.sqrt(n);
+	for (int i = 0; i < n; ++i) printf("%u ", a[i]);
 }
-
-/*
-i=2
-(998244353-998244353/2)*v[1]%998244353
-*/
