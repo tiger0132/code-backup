@@ -1,5 +1,4 @@
 // Modified from f321dd's template
-// Can't AC on LOJ
 
 #include <algorithm>
 #include <cstdio>
@@ -7,7 +6,7 @@
 #include <vector>
 
 typedef unsigned u;
-typedef unsigned long ul;
+typedef unsigned long long ul;
 const int N = 2.7e5, P = 998244353, G = 3, GInv = 332748118;
 
 u md(u x) { return x < P ? x : x - P; }
