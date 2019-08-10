@@ -1,5 +1,6 @@
+// luogu-judger-enable-o2
 // Modified from f321dd's template
-// Implemented: mul inv sqrt ln exp
+// Implemented: mul inv sqrt ln
 
 #include <algorithm>
 #include <cstdio>
@@ -14,7 +15,6 @@ struct io_t {
 #define $ (s == t && (t = (s = in) + fread(in, 1, SIZ, stdin), s == t) ? EOF : *s++)
 	static const int SIZ = 1 << 25;
 	char in[SIZ], out[SIZ], *s = in, *t = in, *o = out;
-	u st[15], top;
 	~io_t() { fwrite(out, o - out, 1, stdout); }
 	inline u read() {
 		u x = 0;
@@ -121,9 +121,8 @@ struct poly {
 	void dft(int n) { ntt(n, 0); }
 	void idft() {
 		int n = size();
-		if (n <= 1) return;
 		ntt(n, 1);
-		ul x = P - (P - 1) / n;
+		ul x = iv(n);
 		for (int i = 0; i < n; ++i) v[i] = v[i] * x % P;
 	}
 	void mul(poly r) {  // 注意，处理完后 r 将会保留 dft 状态
@@ -182,37 +181,13 @@ struct poly {
 		}
 		mod(n);
 	}
-	void sinh(int n) {
-		poly f0 = *this;
-		for (int i = 0; i < n; ++i) f0[i] = md(P - f0[i]);
-		exp(n), f0.exp(n);
-		for (int i = 0; i < n; ++i) v[i] = (u)((ul)md(v[i] + P - f0[i]) * div2 % P);
-	}
-	void cosh(int n) {
-		poly f0 = *this;
-		for (int i = 0; i < n; ++i) f0[i] = md(P - f0[i]);
-		exp(n), f0.exp(n);
-		for (int i = 0; i < n; ++i) v[i] = (ul)md(v[i] + f0[i]) * div2 % P;
-	}
-	void sech(int n) { cosh(n), inv(n); }
 };
 
-poly f, f0, b;
-int n, op;
+poly a;
+int n;
 int main() {
-	f = poly(n = io), b = poly(n), op = io;
-	for (int i = 0; i < n; ++i) f[i] = io;
-	f.exp(n), f0 = f, f0.inv(n);
-	if (op & 1)
-		for (int i = 0; i < n; ++i)
-			io < (u)((ul)md(f[i] + P - f0[i]) * div2 % P) < " \n"[i == n - 1];
-	if ((op & 2) || (op & 4)) {
-		for (int i = 0; i < n; ++i) b[i] = (ul)md(f[i] + f0[i]) * div2 % P;
-		if (op & 2)
-			for (int i = 0; i < n; ++i) io < b[i] < " \n"[i == n - 1];
-		if (op & 4) {
-			b.inv(n);
-			for (int i = 0; i < n; ++i) io < b[i] < " \n"[i == n - 1];
-		}
-	}
+	a = poly(n = io);
+	for (int i = 0; i < n; ++i) a[i] = io;
+	a.exp(n);
+	for (int i = 0; i < n; ++i) io < a[i] < ' ';
 }
