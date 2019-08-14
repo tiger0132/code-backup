@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.ejs": "ejs",
         "cstdio": "cpp",
         "algorithm": "cpp",
         "cctype": "cpp",
@@ -75,6 +76,7 @@
         "regex": "cpp",
         "memory_resource": "cpp",
         "random": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "iterator": "cpp"
     }
 }
