@@ -25,7 +25,7 @@ void ins(int c) {
 	last = cur;
 }
 
-int n, mn[M], mx[N], ans;
+int n, mn[N], mx[N], ans;
 char s[N];
 int main() {
 	init();
@@ -34,7 +34,7 @@ int main() {
 	for (int i = 1; i <= n; i++) ins(s[i] - 'a');
 	memset(mn, 0x3f, sizeof mn);
 	while (~scanf("%s", s + 1)) {
-		memset(mx, 0, sizeof mn);
+		memset(mx, 0, sizeof mx);
 		n = strlen(s + 1);
 		for (int i = 1, p = 1, len = 0; i <= n; i++) {
 			int nx = s[i] - 'a';
