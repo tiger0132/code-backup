@@ -41,6 +41,17 @@ int qry(int i, int x, int l, int r, int ql, int qr) {
 	if (mid < ql) return qry(i, Rc);
 	return qry(i, Lc) + qry(i, Rc);
 }
+void qry(int x, int l, int r, int ql, int qr, int *ans) {
+	if (ql <= l && r <= qr) {
+		for (int i = 0; i < 26; i++) ans[i] += x[s][i], put(i, x, 0);
+		return;
+	}
+	for (int i = 0; i < 26; i++) pd(i, x);
+	int mid = (l + r) / 2;
+	if (ql <= mid) qry(Lc, ans);
+	if (mid < qr) qry(Rc, ans);
+	for (int i = 0; i < 26; i++) up(i, x);
+}
 
 int n, m, op, x, y, c[26];
 char str[N], z[2];
@@ -50,7 +61,7 @@ int main() {
 	while (m--) {
 		scanf("%d%d%d", &op, &x, &y);
 		if (op == 3) {
-			for (int i = 0; i < 26; i++) c[i] = qry(i, Rt, x, y), set(i, Rt, x, y, 0);
+			memset(c, 0, sizeof c), qry(Rt, x, y, c);
 			for (int i = 0, p = x; i < 26; p += c[i++])
 				if (c[i]) set(i, Rt, p, p + c[i] - 1, 1);
 		} else {
