@@ -12,7 +12,11 @@
                     "value": "${fileDirname}/${fileBasenameNoExtension}",
                     "quoting": "strong"
                 },
-                "${fileExtname}"
+                "${fileExtname}",
+                {
+                    "value": "-I${fileDirname}",
+                    "quoting": "strong"
+                },
             ],
             "group": {
                 "kind": "build",
