@@ -14,7 +14,7 @@
                 },
                 "${fileExtname}",
                 {
-                    "value": "-I${fileDirname}",
+                    "value": "-I${fileDirname} -DTIGER0132",
                     "quoting": "strong"
                 },
             ],
