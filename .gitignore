@@ -19,7 +19,8 @@ Research/
 
 # Developing, will be public soon (gugugu)
 Utils/
-Contest/
+data/
+data-luogu/
 
 # .vscode/
 # compile.sh
