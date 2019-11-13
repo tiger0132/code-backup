@@ -7,16 +7,21 @@
 #include <vector>
 #define int ll
 
+void fuck(bool exp) {
+	while (!exp) exp = 0;
+}
+
 typedef long long ll;
-const int N = 3e4 + 43, M = 2e5 + 52, K = 2e3 + 32;
+const int N = 3e4 + 43, M = 2e6 + 62, K = 2e3 + 32;
 struct {
 	struct edge {
 		int to, next, w;
 	} e[M << 1];
 	int head[N], cnt = 1;
 	void operator()(int x, int y, int z) {
-		e[++cnt] = (edge){y, x[head], 0}, x[head] = cnt;
-		e[++cnt] = (edge){x, y[head], z}, y[head] = cnt;
+		fuck(cnt <= 3e6);
+		e[++cnt] = {y, x[head], 0}, x[head] = cnt;
+		e[++cnt] = {x, y[head], z}, y[head] = cnt;
 	}
 	int lv[N];
 	bool bfs(int s, int t) {
@@ -46,11 +51,12 @@ struct {
 struct {
 	struct edge {
 		int to, next;
-	} e[N << 1];
+	} e[M << 1];
 	int head[N], cnt = 1;
 	void operator()(int x, int y) {
-		e[++cnt] = (edge){y, x[head]}, x[head] = cnt;
-		e[++cnt] = (edge){x, y[head]}, y[head] = cnt;
+		fuck(cnt <= 3e6);
+		e[++cnt] = {y, x[head]}, x[head] = cnt;
+		e[++cnt] = {x, y[head]}, y[head] = cnt;
 	}
 } g;
 
@@ -58,7 +64,7 @@ std::stack<int> st;
 bool v[N], R[N];
 bool dfs(int x, int p) {
 	if (x[v]) {
-		for (int y; y != x; st.pop()) (y = st.top())[R] = true;
+		for (int y = 0; y != x; st.pop()) (y = st.top())[R] = true;
 		return true;
 	}
 	st.push(x), x[v] = true;
@@ -69,53 +75,58 @@ bool dfs(int x, int p) {
 
 std::map<int, int> mp;
 int id(int x) {
-	if (!mp.count(x)) return mp[x] = mp.size() + 1;
+	if (!mp.count(x)) return mp[x] = (int)mp.size() + 1;
 	return mp[x];
 }
 
-int S, S0, T, edge[N], idx[K][K], material[N], nc;
-int n, k, x, y, z, c[K], l[K], ans[K][2], cntR;
-std::vector<int> a[K], worker[K];
+int n, k, x, y, z, c[N], l[K], ans[K][2], cntR;
+std::vector<int> a[K], worker[N], idx[K];
+int S, S0, T, edge[N], material[N], nc;
+
+// bool vis[K][K];
+int aaaa[K];
 signed main() {
+	// freopen("1.in", "r", stdin);
 	scanf("%lld%lld", &n, &k);
 	S = 1, S0 = 2, T = 3, nc = 3;
 	for (int i = 1; i <= n; edge[i] = ++nc, g(i++, x))
 		for (scanf("%lld%lld", &x, &y), l[i] = x; y--;) {
-			scanf("%lld", &z);
-			a[i].push_back(id(z));
+			scanf("%lld", &z), z = id(z);
+			// vis[i][z] = 1;
+			a[i].push_back(z);
 		}
 	for (int i = 1; i <= k; i++)
-		scanf("%lld", &x), worker[id(x)].push_back(i), c[id(x)]++;
-	for (int i = 1; i <= mp.size(); i++) material[i] = ++nc;
+		scanf("%lld", &x), x = id(x), /*aaaa[i] = x, */ worker[x].push_back(i), c[x]++;
+	for (int i = 1; i <= (int)mp.size(); i++) material[i] = ++nc;
+	fuck(nc <= 2e4);
 	dfs(1, 0);
-	// for (int i = 1; i <= n; i++) printf("%lld%c", (int)i[R], " \n"[i == n]);
 	for (int i = 1; i <= n; i++)
 		if (!i[R]) {
-			// printf("S -> edge(%lld)\n", i);
 			f(S, edge[i], 1);
-			for (int j : a[i])
-				// printf("edge(%lld) -> material(%lld)\n", i, j),
-				f(edge[i], material[j], 1), idx[i][j] = f.cnt - 1;
+			for (int j : a[i]) f(edge[i], material[j], 1), idx[i].push_back(f.cnt - 1);
 		} else {
 			cntR++;
-			// printf("S' -> edge(%lld)\n", i);
 			f(S0, edge[i], 1);
-			for (int j : a[i])
-				// printf("edge(%lld) -> material(%lld)\n", i, j),
-				f(edge[i], material[j], 1), idx[i][j] = f.cnt - 1;
+			for (int j : a[i]) f(edge[i], material[j], 1), idx[i].push_back(f.cnt - 1);
 		}
-	for (int i = 1; i <= mp.size(); i++) f(material[i], T, c[i]);
-	// if ()
+	for (int i = 1; i <= (int)mp.size(); i++) f(material[i], T, c[i]);
 	f(S, S0, cntR - 1);
 	if (f.dinic(S, T) < n - 1) return puts("-1"), 0;
 	for (int i = 1; i <= n; i++)
-		for (int j : a[i]) {
-			x = idx[i][j];
-			// printf("[2] %lld %lld [%lld %lld]\n", i, l[i], j, f.e[x].w);
+		for (int jj = 0; jj < a[i].size(); jj++) {
+			x = idx[i][jj];
+			int j = a[i][jj];
 			if (f.e[x].w) {
 				z = worker[j].back(), worker[j].pop_back();
 				z[ans][0] = i, z[ans][1] = l[i];
 			}
 		}
-	for (int i = 1; i <= k; i++) printf("%lld %lld\n", ans[i][0], ans[i][1]);
+	// bool f1 = 1;
+	// int count = 0;
+	for (int i = 1; i <= k; i++) {
+		printf("%lld %lld\n", ans[i][0], ans[i][1]);
+		// if (ans[i][0]) f1 &= vis[ans[i][0]][aaaa[i]], count++;
+	}
+	// while (!f1 || count != n - 1)
+	// 	;
 }
