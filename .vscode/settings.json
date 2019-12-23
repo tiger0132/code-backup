@@ -78,7 +78,9 @@
         "random": "cpp",
         "map": "cpp",
         "iterator": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "stack": "cpp",
+        "*.rh": "cpp"
     },
     "C_Cpp.clang_format_fallbackStyle": "none",
     "editor.formatOnSave": true,

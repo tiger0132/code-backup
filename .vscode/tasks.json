@@ -14,7 +14,7 @@
                 },
                 "${fileExtname}",
                 {
-                    "value": "-I${fileDirname} -DTIGER0132",
+                    "value": "-I${fileDirname} -I/home/tiger0132/code-backup/Temp -DTIGER0132",
                     "quoting": "strong"
                 },
             ],
