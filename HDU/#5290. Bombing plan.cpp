@@ -12,14 +12,8 @@ void addedge(int x, int y) {
 	e[++cnt] = (edge){x, y[head]}, y[head] = cnt, y[deg]++;
 }
 
-int w[N], dp[N][K], tmp[K], dep[N];
+int w[N], dp[N][K], tmp[K];
 void dfs(int x, int p, int d) {
-	x[dep] = d;
-	for (int i = x[head], nx; i; i = e[i].next)
-		if ((nx = e[i].to) != p) {
-			dfs(nx, x, d + 1);
-			x[dep] = std::max(x[dep], nx[dep]);
-		}
 	dp[x][x[w] + ofs] = 1;
 	dp[x][-1 + ofs] = 0;
 	for (int j = 100; j >= -100; j--)
@@ -29,6 +23,7 @@ void dfs(int x, int p, int d) {
 #define PROC()                        \
 	for (int j = 100; j >= -100; j--) \
 		tmp[j + ofs] = std::min(tmp[j + ofs], tmp[j + ofs + 1]);
+			dfs(nx, x, d + 1);
 			memset(tmp, 0x3f, sizeof tmp);
 			tmp[w[x] + ofs] = dp[x][x[w] + ofs] + dp[nx][-x[w] + ofs];
 			PROC();
