@@ -11,7 +11,7 @@
 #define int unsigned  // who needs signed int?
 
 typedef unsigned long long ul;
-const int N = 2.7e6 + 672, P = 998244353, G = 3, Gi = 332748118;
+const int N = 2.7e5 + 572, P = 998244353, G = 3, Gi = 332748118;
 
 struct io_t {
 	struct stat st;
@@ -80,7 +80,7 @@ struct poly {
 	// int len(int n) { return n > 1 ? 1u << (32 - __builtin_clz(n - 1)) : 1; }
 	int len(int n) { return 1u << (32 - __builtin_clz(n - 1)); }
 
-	void ntt(int n, signed op) {  // naive DIT NTT impl
+	void dft(int n) {  // naive DIT NTT impl
 		v.resize(n);
 		if (n <= 1) return;
 		for (int i = 0, ri = 0; i < n; i++) {
@@ -95,7 +95,7 @@ struct poly {
 		w[0] = 1;
 		// todo 预处理单位根
 		for (int i = 2; i < n; i *= 2) {
-			w[1] = pw(op == 1 ? G : Gi, (P - 1) / (i * 2));
+			w[1] = pw(G, (P - 1) / (i * 2));
 			for (int j = 2; j < i; j++) w[j] = (ul)w[j - 1] * w[1] % P;
 			for (int j = 0; j < n; j += i * 2) {
 				int *a = &v[0] + j, *b = &v[0] + j + i;
@@ -107,11 +107,11 @@ struct poly {
 			}
 		}
 	}
-	void dft(int n) { ntt(n, 1); }
 	void idft() {
 		int n = size();
 		if (n <= 1) return;
-		ntt(n, -1);
+		dft(n);
+		std::reverse(v.begin() + 1, v.end());
 		ul x = P - (P - 1) / n;
 		for (int i = 0; i < n; ++i) v[i] = (ul)v[i] * x % P;
 	}
