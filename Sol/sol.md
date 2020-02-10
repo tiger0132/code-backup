@@ -604,8 +604,30 @@ sb 题
 
 首先令 $can_{i,j,k}$ 表示能不能在 $d_i$ 时刻从 $j$ 号点到达 $k$ 号点，$dis_{i,j,k}$ 仅仅使用前 $i$ 条边从 $j$ 号点到达 $k$ 号点的最短路，排完序后的前 $i$ 条边构成的邻接矩阵为 $G_i$。
 
-那么 $can_i=can_i-1}\times G_i^{d_i-{d_{i-1}}}$，其中乘法是矩阵乘法。
+那么 $can_i=can_{i-1}\times G_i^{d_i-{d_{i-1}}}$，其中乘法是矩阵乘法。
 
 然后考虑更新最短路。$dis_{i,j,k}=\min(dis_{i-1,j,k},dis_{i-1,j,x_i}+1+dis_{i-1,y_i,k})$。
 
 最后对于每一个能从 $1$ 走 $d$ 步到达的点，因为限制了只允许使用前 $i$ 条边，且前 $i$ 条边已经被解锁了，所以可以直接对于所有 $can_{1,j}=1$ 的 $j$，$ans\leftarrow\min(ans,d+dis_{i,j,n})$。
+
+# [P1] CF1149B [*2200]
+
+直接 DP 就行了。
+
+# [P1] CSAcademy - Manhattan
+
+$$
+\begin{aligned}
+&\text{let}~f(k)=\min(x_2+k,x_4)-\max(x_1+k,x_3)+1,\\
+&\text{assume that}~y_2<y_3,\text{then}\\
+&\sum_{a=x_1}^{x_2}\sum_{b=y_1}^{y_2}\sum_{c=x_3}^{x_4}\sum_{d=y_3}^{y_4}\binom{|a-c|+|b-d|}{|a-c|}\\
+\xlongequal{k=a-c}&\sum_{k=x_3-x_2}^{x_4-x_1}f(k)\sum_{b=y_1}^{y_2}\sum_{d=y_3}^{y_4}\binom{|k|+|b-d|}{|k|}\\
+=&\sum_{k=x_3-x_2}^{x_4-x_1}f(k)\sum_{b=y_1}^{y_2}\sum_{d=y_3}^{y_4}\binom{|k|+d-b}{|k|}\\
+=&\sum_{k=x_3-x_2}^{x_4-x_1}f(k)\sum_{b=y_1}^{y_2}\left[\binom{|k|+y_4+1-b}{|k|}-\binom{|k|+y_3-b}{|k|}\right]\\
+=&\sum_{k=x_3-x_2}^{x_4-x_1}f(k)\sum_{b=y_1}^{y_2}\left[\binom{|k|+y_4+1-b}{|k|+1}-\binom{|k|+y_3-b}{|k|+1}\right]\\
+=&\sum_{k=x_3-x_2}^{x_4-x_1}f(k)\left[\binom{|k|+y_4-y_1+2}{|k|+1}-\binom{|k|+y_4-y_2+1}{|k|+1}-\binom{|k|+y_3-y_1+1}{|k|+1}+\binom{|k|+y_3-y_2}{|k|+1}\right]\\
+\xlongequal{p=|k|+2}&\sum_{k=x_3-x_2}^{x_4-x_1}f(k)\left[\binom{p+y_4-y_1}p-\binom{p+y_4-y_2-1}p-\binom{p+y_3-y_1-1}p+\binom{p+y_3-y_2-2}p\right]\\
+\end{aligned}
+$$
+
+屑出题人
