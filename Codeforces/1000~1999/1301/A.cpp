@@ -2,21 +2,20 @@
 #include <cstdio>
 #include <cstring>
 
-const int N = 1e3 + 31;
+const int N = 1e2 + 21;
 
-int n, f, l;
-char s[N];
+char a[N], b[N], c[N];
+int n;
 int main() {
-	for (scanf("%*d"); ~scanf("%s", s);) {
-		n = strlen(s);
-		f = l = -1;
-		int a = 0;
+	for (scanf("%*d"); ~scanf("%s%s%s", a, b, c);) {
+		n = strlen(a);
 		for (int i = 0; i < n; i++)
-			if (s[i] == '1') {
-				if (!~f) f = i;
-				l = i;
+			if ((a[i] == b[i] && a[i] != c[i]) ||
+				(a[i] != b[i] && a[i] != c[i] && b[i] != c[i])) {
+				puts("NO");
+				goto end;
 			}
-		for (int i = f; i <= l; i++) a += s[i] == '0';
-		printf("%d\n", a);
+		puts("YES");
+	end:;
 	}
 }
