@@ -1,0 +1,10 @@
+$$
+\begin{aligned}
+F(x)&=1+x\frac{F^3(x)+3F(x^2)F(x)+2F(x^3)}6\\
+G(F(x))&=1+x\frac{F^3(x)+3F(x^2)F(x)+2F(x^3)}6-F(x)\\
+G'(F(x))&=x\frac{3F^2(x)+3F(x^2)}6-1\\
+&=x\frac{F^2(x)+F(x^2)}2-1\\
+F(x)&=F_0(x)-\frac{G(F_0(x))}{G'(F_0(x))}\\
+&=F_0(x)-\frac{x\left[F_0^3(x)+3F_0(x^2)F_0(x)+2F_0(x^3)\right]+6-6F_0(x)}{3x\left[F_0^2(x)+F_0(x^2)\right]-6}
+\end{aligned}
+$$
