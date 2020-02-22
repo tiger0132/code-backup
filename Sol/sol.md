@@ -653,3 +653,18 @@ $$
 考虑按 $r$ 降序排序。假设 $r\le r'$，那么只需要满足 $|x-x'|\le r,|q-q'|\le K$，即 $x-r\le x'\le x+r,q-K\le q'\le q+K$。
 
 然后就是裸的三维数点了。
+
+# [P1] CF528D [*2500]
+
+$$
+\begin{aligned}
+&\text{let}~S_c(x)=\sum_{i=0}^{n-1}[\exists i-k\le j\le i+k,S_j=c]x^i,\\
+&~~~~\,\,T_c(x)=\sum_{i=0}^{m-1}[T_i=c]x^i,T'_c(x)=\sum_{i=0}^{m-1}[T_{m-i-1}=c]x^i.\\
+&ans_i\\
+=&\sum_{j=0}^{m-1}\sum_{k\in\{A,T,G,C\}}[x^{i+j}]S_k(x)\cdot[x^j]T_k(x)\\
+=&\sum_{k\in\{A,T,G,C\}}\sum_{j=0}^{m-1}[x^{i+j}]S_k(x)\cdot[x^{m-j-1}]T'_k(x)\\
+=&\sum_{k\in\{A,T,G,C\}}[x^{m+i-1}]S_k(x)\cdot T'_k(x)\\
+\end{aligned}
+$$
+
+然后直接乘就完事了
