@@ -652,7 +652,7 @@ $$
 
 考虑按 $r$ 降序排序。假设 $r\le r'$，那么只需要满足 $|x-x'|\le r,|q-q'|\le K$，即 $x-r\le x'\le x+r,q-K\le q'\le q+K$。
 
-然后就是裸的三维数点了。
+然后就是裸的二维数点了。
 
 # [P1] CF528D [*2500]
 
@@ -674,3 +674,15 @@ $$
 傻逼题
 
 不说了，伤心
+
+# [P1] P3242 [*2100]
+
+假设 $dfn_x\le dfn_y$。
+
+如果 $x$ 是 $y$ 的祖先，假设 $z$ 是 $x$ 以 $y$ 为根时的父亲，那么 $(x,y)$ 是 $(u,v)$ 的子路径当且仅当 $1\le dfn_u<dfn_w,dfn_y\le dfn_v<dfn_y+sz_y$ 或 $dfn_y\le dfn_u<dfn_y+sz_y,dfn_w+sz_w\le dfn_v\le n$。
+
+否则 $(x,y)$ 是 $(u,v)$ 的子路径当且仅当 $dfn_x\le dfn_u<dfn_x+sz_x,dfn_y\le dfn_v<dfn_y+sz_y$。
+
+然后就变成给一堆矩形和一堆点，求覆盖每一个点的矩形的权值 $k$ 小。
+
+然后扫描线 + 整体二分。
