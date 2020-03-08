@@ -1,0 +1,2 @@
+// clang-format off
+l,r,c,a[99],b[99],i,j,k,p;f(long n){n>1?a[i++]=n&1?f(n^1),--l:(f(n>>1),++r):(l=1);}long n;main(){scanf("%ld",&n),f(n+1);printf("%d\n",i*2);for(j=i;j;)b[a[--j]-l]=i-j;for(;k<i;)printf("%d ",b[k++]);for(;p<=r-l;)printf("%d ",++p);}
