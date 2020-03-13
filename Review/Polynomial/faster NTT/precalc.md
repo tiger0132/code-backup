@@ -1,0 +1,1 @@
+$$\large w_{i+k}=g^\frac{k(P-1)}{2i}$$
