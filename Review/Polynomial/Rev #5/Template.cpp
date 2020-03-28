@@ -23,7 +23,7 @@ struct io_t {
 		fd = fileno(stdin), fstat(fd, &st), ptr = (char*)mmap(0, st.st_size, 1, 2, fd, 0);
 	}
 	inline io_t& operator>>(int& x) {
-#ifdef LOCAL
+#ifdef LOCAL_QWQ
 		scanf("%d", &x);
 #else
 		x = 0;
@@ -98,9 +98,9 @@ struct poly {
 		int tmp = P - (P - 1) / n;
 		for (int& i : v) i = (L)i * tmp % P;
 	}
-	inline void mul(poly rhs, std::function<int(int, int)> f = [](int x, int y) {
-		return (L)x * y % P;
-	}) {
+	inline void mul(
+		poly rhs,
+		std::function<int(int, int)> f = [](int x, int y) { return (L)x * y % P; }) {
 		int n = len(size() + rhs.size() - 1);
 		dft(n), rhs.dft(n);
 		for (int i = 0; i < n; i++) v[i] = f(v[i], rhs[i]);
@@ -145,7 +145,7 @@ inline void calc(poly& f, int n) {
 
 		fx2.dft(l);
 		for (int j = 0; j < l; j++) fx2[j] = (L)fx2[j] * f1[j] % P;
-		fx2.idft(l), f1.idft(l), fx2.resize(i);  // now, fx2 = F0(x^2)F0(x)
+		fx2.idft(l), f1.idft(l), fx2.resize(i);	 // now, fx2 = F0(x^2)F0(x)
 		// f1 f2 f3 not dfted
 
 		p.resize(i);

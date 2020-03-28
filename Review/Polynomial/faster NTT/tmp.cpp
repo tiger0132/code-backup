@@ -22,7 +22,7 @@ struct io_t {
 		fd = fileno(stdin), fstat(fd, &st), ptr = (char*)mmap(0, st.st_size, 1, 2, fd, 0);
 	}
 	io_t& operator>>(int& x) {
-#ifdef LOCAL
+#ifdef LOCAL_QWQ
 		scanf("%d", &x);
 #else
 		x = 0;
