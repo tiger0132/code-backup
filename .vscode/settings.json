@@ -80,9 +80,11 @@
         "iterator": "cpp",
         "climits": "cpp",
         "stack": "cpp",
-        "*.rh": "cpp"
+        "*.rh": "cpp",
+        "*.xpm": "cpp",
+        "bit": "cpp"
     },
     "C_Cpp.clang_format_fallbackStyle": "none",
-    "editor.formatOnSave": true,
-    "editor.insertSpaces": false
+    "editor.insertSpaces": false,
+    "editor.formatOnSave": true
 }
