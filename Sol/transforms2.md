@@ -36,6 +36,14 @@
 
 $\displaystyle(\operatorname{XXX}a)_n=\sum_{k=1}^n(\operatorname{XXX_k}a)_n$。
 
+## AIJ
+
+盒子有序，无区分规则，球有标号。
+
+$$\operatorname{AIJ}\hat A(x)=\sum_{i=0}^\infty\hat A^i(x)=\frac1{1-\hat A(x)}$$
+
+$$\operatorname{AIJ_k}\hat A(x)=\hat A^k(x)$$
+
 ## AIK = INVERT
 
 盒子有序，无区分规则，球无标号。
@@ -43,6 +51,12 @@ $\displaystyle(\operatorname{XXX}a)_n=\sum_{k=1}^n(\operatorname{XXX_k}a)_n$。
 $$\operatorname{AIK}A(x)=\sum_{i=0}^\infty A^i(x)=\frac1{1-A(x)}$$
 
 $$\operatorname{AIK_k}A(x)=A^k(x)$$
+
+## BIJ
+
+盒子线性，可翻转，无区分规则，球有标号。
+
+$$\operatorname{BIJ}\hat A(x)=\hat A(x)+\frac12\sum_{i=2}^\infty\hat A^i(x)=\frac{2\hat A(x)-\hat A^2(x)}{2-2\hat A(x)}$$
 
 ## EIJ = EXP
 
