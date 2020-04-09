@@ -32,11 +32,11 @@ $$
 
 $$
 \begin{aligned}
-f(n)&=\sum_{i=1}^n(-1)^{k+1}\binom nk2^{k(n-k)}f(n-k)\\
-&=\sum_{i=1}^n(-1)^{k+1}\frac{n!}{k!(n-k)!}2^{k(n-k)}f(n-k)\\
-&=n!\sum_{i=1}^n\frac{(-1)^{k+1}}{k!}\frac{f(n-k)}{(n-k)!}2^{\frac{n^2-k^2-(n-k)^2}2}\\
-&=n!\sqrt2^{n^2}\sum_{i=1}^n\frac{(-1)^{k+1}}{k!2^{k^2}}\frac{f(n-k)}{(n-k)!\sqrt2^{(n-k)^2}}\\
-\frac{f(n)}{n!\sqrt2^{n^2}}&=\sum_{i=1}^n\frac{(-1)^{k+1}}{k!2^{k^2}}\frac{f(n-k)}{(n-k)!\sqrt2^{(n-k)^2}}\\
+f(n)&=\sum_{k=1}^n(-1)^{k+1}\binom nk2^{k(n-k)}f(n-k)\\
+&=\sum_{k=1}^n(-1)^{k+1}\frac{n!}{k!(n-k)!}2^{k(n-k)}f(n-k)\\
+&=n!\sum_{k=1}^n\frac{(-1)^{k+1}}{k!}\frac{f(n-k)}{(n-k)!}2^{\frac{n^2-k^2-(n-k)^2}2}\\
+&=n!\sqrt2^{n^2}\sum_{k=1}^n\frac{(-1)^{k+1}}{k!2^{k^2}}\frac{f(n-k)}{(n-k)!\sqrt2^{(n-k)^2}}\\
+\frac{f(n)}{n!\sqrt2^{n^2}}&=\sum_{k=1}^n\frac{(-1)^{k+1}}{k!2^{k^2}}\frac{f(n-k)}{(n-k)!\sqrt2^{(n-k)^2}}\\
 &\text{let}~F(x)=\sum_{i=0}^n\frac{f(i)}{i!\sqrt2^{i^2}}x^i,G(x)=\sum_{i=1}^n\frac{(-1)^{i+1}}{i!\sqrt2^{i^2}}x^i,\text{therefore}\\
 F(x)&=F(x)G(x)+1\\
 F(x)&=\frac1{1-G(x)}\\
