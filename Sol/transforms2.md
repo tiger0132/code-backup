@@ -84,6 +84,21 @@ $$
 \end{aligned}
 $$
 
+## EGK = WEIGH
+
+盒子无序，任意两个盒子都能由大小和颜色区分，球无标号。
+
+$$
+\begin{aligned}
+\operatorname{EGK}A(x)=&\prod_{i=1}^\infty(1+x^i)^{a_i}\\
+=&\exp\left[\sum_{i=1}^\infty\ln(1+x^i)^{a_i}\right]\\
+=&\exp\left[\sum_{i=1}^\infty a_i\ln(1+x^i)\right]\\
+=&\exp\left(\sum_{i=1}^\infty a_i\sum_{j=1}^\infty\frac{(-1)^{j-1}x^{ij}}j\right)\\
+=&\exp\left(\sum_{j=1}^\infty\frac{(-1)^{j-1}}j\sum_{i=1}^\infty a_ix^{ij}\right)\\
+=&\exp\left(\sum_{j=1}^\infty\frac{(-1)^{j-1}F(x^j)}j\right)\\
+\end{aligned}
+$$
+
 Note：完全背包
 
 ### 例题
