@@ -5,20 +5,20 @@
 - **桥**（bridge）是指删掉之后会使图不连通的边。
 - **边双连通**（2-edge-connected）是指图中没有桥。
 - **割边对**（cut-pair）是指删掉之后会使图不连通的**两条边**（组成的二元组），且这两条边都不是桥。
-- **割边**（cut-edge）是指割边对中的边。（注意，和常见的定义不同）
+- **割边**（cut-edge）是指割边对中的边。**（注意，和常见的定义不同）**
 - **边三连通**（3-edge-connected）是指图中没有桥和割边对。
 - **边三连通分量**（3-edge-connected component）是指极大边三连通子图。
 - $\operatorname{dfs}(w)$ 代表 $w$ 的 DFS 序。
 - 对于一条边 $e=(u,v)$：
 	- 如果 $\operatorname{dfs}(u)<\operatorname{dfs}(v)$，那么它是一条 **树边**（tree-edge），记做 $u\to v$。此时 $u$ 是 $v$ 的父亲，$v$ 是 $u$ 的儿子。
-	- 如果 $\operatorname{dfs}(u)>\operatorname{dfs}(v)$，那么它是一条 **返祖边**（back-edge），记做 $u\hookrightarrow v$。此时 $u$ 是 $v$ 的后代，$v$ 是 $u$ 的祖先。这条边是 $v$ 的**传入返祖边**（incoming），是 $u$ 的**传出返祖边**（back-edge）。
+	- 如果 $\operatorname{dfs}(u)>\operatorname{dfs}(v)$，那么它是一条 **返祖边**（back-edge），记做 $u\hookrightarrow v$。此时 $u$ 是 $v$ 的后代，$v$ 是 $u$ 的祖先。这条边是 $v$ 的**传入返祖边**（incoming），是 $u$ 的**传出返祖边**（outgoing back-edge）。
 - $G$ 中所有的树边形成了一棵生成树，记做 $T$（即 DFS 树）。
 	这里是一些 DFS 树的性质：
-	- $T$ 的根是 $r$。
+	- $T$ 的根是 $r$，即 DFS 的起点。
 	- $u$ 是 $v$ 的祖先（$v$ 是 $u$ 的后代），当且仅当 $u$ 在路径 $r-v$ 上。
 	- $u-v$ 是一条**树上路径**（tree-path）当且仅当 $u$ 是 $v$ 的祖先。
-	- $T_w$ 是 $T$ 中以 $w$ 为根的**子树**。
-	- 对于一个点 $w$，定义 $\operatorname{lowpt}(w)=\operatorname{dfs}(z)$，其中 $\operatorname{z}$ 是所有的，可以通过一条**树上路径** $w-z$ 和一条**返祖边** $v\hookrightarrow z$ 到达的点中，DFS 序最小的。（就是 `low[]` 的定义）
+	- $T_w$ 是 $T$ 中以 $w$ 为根的**子树**，是 $T$ 中包含所有 $w$ 的后代的子树。
+	- 对于一个点 $w$，定义 $\operatorname{lowpt}(w)=\operatorname{dfs}(z)$，其中 $z$ 是所有的，可以通过一条**树上路径** $w-z$ 和一条**返祖边** $v\hookrightarrow z$ 到达的点中，DFS 序最小的。
 
 # 简化过的实现方式
 
@@ -32,10 +32,15 @@
 
 图通过**吸收-弹出操作**（absorb-eject operation）进行变换。设：在对 $e=(w,u)$ 进行操作时，图 $G$ 被变换成了 $\hat G$：
 
-- 如果 $\operatorname{deg}_{\hat G}(u)=2$，令 $e'=(u,u_1)$ 为另外一条和 $u$ 相连的边，那么 $(e,e')$ 是一个割边对。所以 $e$ 和 $e'$ 被替换成了一条新边 $(w,u_1)$，同时 $u$ 成为了一个孤立超顶点。（Case (i)）
-- 如果 $\operatorname{deg}_{\hat G}(u)\ne2$ 且 $e$ 已经被确认不可能是割边了，
+- 如果 $\operatorname{deg}_{\hat G}(u)=2$，令 $e'=(u,u_1)$ 为另外一条和 $u$ 相连的边，那么 $(e,e')$ 是一个割边对。所以 $e$ 和 $e'$ 被替换成了一条新边 $(w,u_1)$，同时 $u$ 成为了一个孤立超顶点。（下图 Case (i)）
+
+- 如果 $\operatorname{deg}_{\hat G}(u)\ne2$ 且 $e$ 已经被确认不可能是割边了，那么点 $w$ 会把 $u$ 吸收进来，因为它们一定在同一个边三连通分量。作为结果，$u$ 的邻边变成了 $w$ 的邻边，并且 $\sigma(w)\gets\sigma(w)\cup\sigma(u)$。（下图 Case (ii)）
 
 ![](2-Figure1-1.png)
 
 为了进行转换，这个算法会从 $G$ 中任意一个点 $r$ 开始 DFS。在 DFS 的过程中，每当从某个点 $u$ 回溯到某个点 $w$ 时，$T_u$ 的顶点构成的导出子图会被转换为一些孤立超顶点，和一条 $u-u_1-u_2-\cdots-u_k$ 的树上路径。
+
+每一个独立的超顶点 $v$ 在 $\sigma(v)$ 中保存了 $G$ 中的一个独立的边三连通分量。每个超顶点 $u_i~(0\le i\le k,{\small\text{这里认为}}~u_0=u)$ 在 $\sigma(u_i)$ 中保存了 $G$ 中一个边三连通分量的子集。
+
+![](3-Figure2-1.png)
 
