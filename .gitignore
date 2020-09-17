@@ -1,7 +1,5 @@
 Temp/
 Trash/
-Private/
-YALI/
 *.in
 *.out
 *.ans
@@ -11,13 +9,12 @@ YALI/
 *chk*
 *check*
 temp-*
-DLOJ/
 Others/
 .vscode/ipch/
 Research/
+Tests/
 *Orig*
 
-# Developing, will be public soon (gugugu)
 Utils/
 data/
 data-luogu/

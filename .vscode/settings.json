@@ -82,9 +82,17 @@
         "stack": "cpp",
         "*.rh": "cpp",
         "*.xpm": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "any": "cpp",
+        "charconv": "cpp",
+        "numbers": "cpp",
+        "stop_token": "cpp",
+        "variant": "cpp"
     },
     "C_Cpp.clang_format_fallbackStyle": "none",
-    "editor.insertSpaces": false,
-    "editor.formatOnSave": true
+    "editor.insertSpaces": false
 }
